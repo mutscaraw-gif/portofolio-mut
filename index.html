@@ -2,468 +2,1141 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Landing Page - Portfolio</title>
+  <title>Siti Mutiara — Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:   #FAF7F3;
+      --peach:   #F0E4D3;
+      --sand:    #DCC5B2;
+      --rose:    #D9A299;
+      --deep:    #6B4C42;
+      --text:    #3D2B23;
+      --muted:   #8C7066;
+      --white:   #ffffff;
+    }
 
-  <!-- Bootstrap 5 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    html { scroll-behavior: smooth; }
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css">
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE TEXTURE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: .5;
+    }
+
+    /* ─── NAVBAR ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(250,247,243,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(220,197,178,0.4);
+    }
+
+    .nav-logo {
+      font-family: 'Caveat', cursive;
+      font-size: 22px;
+      color: var(--rose);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      position: relative;
+      transition: color .3s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -3px;
+      width: 0; height: 2px;
+      background: var(--rose);
+      transition: width .3s;
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a.active { color: var(--rose); }
+    .nav-links a.active::after { width: 100%; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 60px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-blob {
+      position: absolute;
+      right: -80px; top: 50%;
+      transform: translateY(-50%);
+      width: 560px; height: 560px;
+      background: radial-gradient(circle, var(--peach) 0%, var(--sand) 50%, transparent 70%);
+      border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+      animation: blobFloat 8s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    @keyframes blobFloat {
+      0%, 100% { border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; transform: translateY(-50%) scale(1); }
+      50% { border-radius: 40% 60% 45% 55% / 60% 40% 60% 40%; transform: translateY(-52%) scale(1.04); }
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 600px; }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--peach);
+      border: 1px solid var(--sand);
+      border-radius: 50px;
+      padding: 8px 18px;
+      font-size: 13px;
+      color: var(--deep);
+      font-weight: 500;
+      margin-bottom: 28px;
+      animation: fadeSlideUp .7s ease both;
+    }
+
+    .hero-tag::before { content: '✦'; color: var(--rose); }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(42px, 6vw, 72px);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 10px;
+      animation: fadeSlideUp .7s .1s ease both;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--rose);
+    }
+
+    .hero-role {
+      font-family: 'Caveat', cursive;
+      font-size: 26px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      animation: fadeSlideUp .7s .2s ease both;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 36px;
+      max-width: 480px;
+      animation: fadeSlideUp .7s .3s ease both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      animation: fadeSlideUp .7s .4s ease both;
+    }
+
+    .btn-primary-warm {
+      background: var(--rose);
+      color: var(--white);
+      border: none;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .3s;
+      text-decoration: none;
+    }
+
+    .btn-primary-warm:hover {
+      background: var(--deep);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(217,162,153,0.4);
+    }
+
+    .btn-outline-warm {
+      background: transparent;
+      color: var(--deep);
+      border: 1.5px solid var(--sand);
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .3s;
+      text-decoration: none;
+    }
+
+    .btn-outline-warm:hover {
+      background: var(--peach);
+      border-color: var(--rose);
+      transform: translateY(-2px);
+    }
+
+    /* ─── CAT ILLUSTRATION ─── */
+    .hero-cat {
+      position: absolute;
+      right: 80px; bottom: 80px;
+      z-index: 2;
+      animation: catFloat 4s ease-in-out infinite;
+    }
+
+    @keyframes catFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+
+    /* CAT SVG tail wag */
+    .cat-tail { transform-origin: 10px 5px; animation: tailWag 1.2s ease-in-out infinite alternate; }
+    @keyframes tailWag {
+      from { transform: rotate(-20deg); }
+      to   { transform: rotate(20deg); }
+    }
+
+    /* cat blink */
+    .cat-eye { animation: blink 4s ease-in-out infinite; }
+    @keyframes blink {
+      0%, 90%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+
+    /* floating mini cat in corner */
+    .mini-cat {
+      position: fixed;
+      bottom: 30px; right: 30px;
+      z-index: 500;
+      cursor: pointer;
+      animation: miniFloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px rgba(217,162,153,0.5));
+    }
+
+    @keyframes miniFloat {
+      0%,100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-8px) rotate(3deg); }
+    }
+
+    .mini-cat:hover { animation-play-state: paused; transform: scale(1.1) rotate(-5deg); }
+
+    /* ─── SECTION BASE ─── */
+    section {
+      padding: 100px 60px;
+      position: relative;
+    }
+
+    .section-label {
+      font-family: 'Caveat', cursive;
+      font-size: 18px;
+      color: var(--rose);
+      font-weight: 500;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      max-width: 580px;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    /* ─── ABOUT ─── */
+    .about {
+      background: var(--peach);
+      clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+      padding: 130px 60px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .about-image-wrap {
+      position: relative;
+    }
+
+    .about-image-wrap .img-placeholder {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: linear-gradient(135deg, var(--sand), var(--rose));
+      border-radius: 30px 30px 100px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      box-shadow: 20px 20px 0 var(--sand);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-image-wrap .img-placeholder img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+    }
+
+    .about-sticker {
+      position: absolute;
+      bottom: -20px; right: -20px;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 14px 18px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--deep);
+    }
+
+    .about-sticker span { display: block; font-size: 24px; margin-bottom: 4px; }
+
+    .drive-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .drive-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 18px;
+      transition: all .3s;
+    }
+
+    .drive-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.07); }
+
+    .drive-card .icon { font-size: 22px; margin-bottom: 8px; }
+    .drive-card h6 { font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--deep); }
+    .drive-card p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+    /* ─── PROJECTS ─── */
+    .projects { background: var(--cream); }
+
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 50px;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .project-card {
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--peach);
+      transition: all .3s;
+      position: relative;
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(217,162,153,0.2);
+      border-color: var(--sand);
+    }
+
+    .project-img-wrap {
+      height: 180px;
+      background: linear-gradient(135deg, var(--peach), var(--sand));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .4s;
+    }
+
+    .project-card:hover .project-img-wrap img { transform: scale(1.05); }
+
+    .project-body { padding: 20px; }
+
+    .project-body h5 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .project-body p { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+
+    .tech-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+
+    .tech-badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      background: var(--peach);
+      color: var(--deep);
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .project-links { display: flex; gap: 10px; }
+
+    .btn-sm-dark {
+      font-size: 12px; padding: 8px 16px;
+      background: var(--deep); color: var(--white);
+      border-radius: 20px; text-decoration: none;
+      transition: all .3s;
+    }
+
+    .btn-sm-dark:hover { background: var(--text); }
+
+    .btn-sm-outline {
+      font-size: 12px; padding: 8px 16px;
+      border: 1.5px solid var(--sand); color: var(--deep);
+      border-radius: 20px; text-decoration: none;
+      transition: all .3s;
+    }
+
+    .btn-sm-outline:hover { background: var(--peach); border-color: var(--rose); }
+
+    /* ─── SKILLS ─── */
+    .skills-section {
+      background: var(--peach);
+      clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+      padding: 130px 60px;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      max-width: 1100px;
+      margin: 60px auto 0;
+    }
+
+    .skill-item { margin-bottom: 22px; }
+
+    .skill-header {
+      display: flex; justify-content: space-between;
+      font-size: 14px; font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .skill-header .pct { color: var(--rose); font-weight: 600; }
+
+    .skill-bar {
+      height: 8px;
+      background: var(--sand);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .skill-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--rose), var(--deep));
+      border-radius: 10px;
+      width: 0;
+      transition: width 1.2s cubic-bezier(.4,0,.2,1);
+    }
+
+    .exp-item {
+      padding: 20px;
+      background: var(--white);
+      border-radius: 16px;
+      margin-bottom: 16px;
+      border-left: 4px solid var(--rose);
+      transition: all .3s;
+    }
+
+    .exp-item:hover { transform: translateX(6px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+
+    .exp-item h6 { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+    .exp-item .period { font-size: 12px; color: var(--rose); font-weight: 500; display: block; margin-bottom: 8px; }
+    .exp-item p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* ─── CONTACT ─── */
+    .contact-section { background: var(--cream); }
+
+    .contact-wrap {
+      max-width: 1000px;
+      margin: 50px auto 0;
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 60px;
+      background: var(--white);
+      border-radius: 30px;
+      padding: 60px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+      border: 1px solid var(--peach);
+    }
+
+    .contact-info-side h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      margin-bottom: 14px;
+    }
+
+    .contact-info-side p { font-size: 14px; color: var(--muted); line-height: 1.8; margin-bottom: 28px; }
+
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      color: var(--deep);
+    }
+
+    .contact-detail .icon-wrap {
+      width: 36px; height: 36px;
+      background: var(--peach);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    .socials { display: flex; gap: 12px; margin-top: 24px; }
+
+    .social-btn {
+      width: 40px; height: 40px;
+      background: var(--peach);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      text-decoration: none;
+      transition: all .3s;
+    }
+
+    .social-btn:hover { background: var(--rose); transform: translateY(-3px); }
+
+    .form-group { margin-bottom: 18px; }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: var(--cream);
+      border: 1.5px solid var(--peach);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color .3s;
+      resize: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--rose); background: var(--white); }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--sand); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      text-align: center;
+      padding: 30px;
+      background: var(--peach);
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid var(--sand);
+    }
+
+    footer .heart { color: var(--rose); }
+
+    /* ─── DECORATIVE CATS ─── */
+    .deco-cat {
+      position: absolute;
+      opacity: .15;
+      pointer-events: none;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--cream); }
+    ::-webkit-scrollbar-thumb { background: var(--sand); border-radius: 10px; }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 24px 60px; }
+      .hero-cat { right: 10px; bottom: 20px; transform: scale(.6); transform-origin: bottom right; }
+      section { padding: 80px 24px; }
+      .about { clip-path: none; }
+      .about-grid, .skills-grid { grid-template-columns: 1fr; gap: 40px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .contact-wrap { grid-template-columns: 1fr; padding: 30px; gap: 30px; }
+      .drive-cards { grid-template-columns: 1fr 1fr; }
+      .projects-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+    }
+  </style>
 </head>
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg">
-  <div class="container justify-content-center">
-    <ul class="navbar-nav gap-3">
-      <li class="nav-item">
-        <a class="nav-link btn btn-outline-dark btn-dark-rounded active" href="#">Home</a>
-      </li>
-        <li class="nav-item">
-    <a class="nav-link btn btn-outline-dark btn-dark-rounded underline-only" href="#">About</a>
-    </li>
-      <li class="nav-item">
-    <a class="nav-link btn btn-outline-dark btn-dark-rounded underline-only" href="#">Projects</a>
-    </li>
-    <li class="nav-item">
-    <a class="nav-link btn btn-outline-dark btn-dark-rounded underline-only" href="#">Expertise</a>
-    </li>
-    <li class="nav-item">
-    <a class="nav-link btn btn-outline-dark btn-dark-rounded underline-only" href="#">Contact</a>
-    </li>
-    </ul>
-  </div>
+<nav>
+  <a href="#" class="nav-logo">Siti ✦</a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Expertise</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
 </nav>
 
-
 <!-- HERO -->
-<section class="hero">
-  <div class="container">
-    <div class="row align-items-center">
+<section class="hero" id="home">
+  <div class="hero-bg-blob"></div>
 
-      <!-- LEFT -->
-      <div class="col-md-6">
-        <span class="badge-custom">Bersemangat untuk Belajar dan Berkolaborasi</span>
-
-        <h1 class="hero-title">Hi, I'm Siti Mutiara</h1>
-        <h2 class="hero-subtitle">Software Engineer</h2>
-
-        <p class="hero-desc">
-            Saya menciptakan pengalaman digital yang indah, fungsional, dan berpusat pada pengguna.
-          Dengan pengalaman tiga tahun dalam pengembangan web, saya menghidupkan ide
-          melalui kode bersih dan desain yang bijaksana.
-        </p>
-
-        <div class="d-flex gap-3">
-          <a href="#about" class="btn btn-outline-dark btn-dark-rounded">About Me</a>
-        </div>
-      </div>
-
+  <div class="hero-content">
+    <span class="hero-tag">Bersemangat untuk Belajar dan Berkolaborasi</span>
+    <h1 class="hero-name">Hi, I'm <em>Siti Mutiara</em></h1>
+    <p class="hero-role">Software Engineer ✦ Front-End Developer</p>
+    <p class="hero-desc">
+      Saya menciptakan pengalaman digital yang indah, fungsional, dan berpusat pada pengguna.
+      Dengan pengalaman tiga tahun dalam pengembangan web, saya menghidupkan ide
+      melalui kode bersih dan desain yang bijaksana.
+    </p>
+    <div class="hero-cta">
+      <a href="#about" class="btn-primary-warm">About Me</a>
+      <a href="#projects" class="btn-outline-warm">View Projects</a>
     </div>
   </div>
-</section>
 
-<!-- ABOUT SECTION -->
-<section class="about">
-  <div class="container">
-    <div class="row align-items-center">
-
-      <!-- LEFT CONTENT -->
-      <div class="col-md-7">
-        <span class="section-label">ABOUT ME</span>
-
-        <h2 class="about-title">
-          Learn to Build Website with <br>
-          Coding & Design
-        </h2>
-
-        <p class="about-desc">
-          I'm a creative front-end developer passionate about crafting modern and
-          responsive web experiences. By focusing on clean design and usability,
-          I turn ideas into digital products that users enjoy.
-        </p>
-
-        <p class="about-desc">
-          I am a creative front-end and back-end developer passionate about making modern crafts and
-          responsive web experience. By focusing on clean design and usability,
-          I turn ideas into digital products that users enjoy.
-        </p>
-
-        <h5 class="drive-title">What Drives Me</h5>
-
-        <div class="row g-3">
-          <div class="col-md-4">
-            <div class="drive-card">
-              <h6>⚙️ Languages</h6>
-              <p>HTML, CSS, JavaScript, PHP, React</p>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="drive-card">
-              <h6>🎓 Education</h6>
-              <p>SMKN Tengaran<br>RPL</p>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="drive-card">
-              <h6>📁 Organisasi</h6>
-              <p>Rohis SMKN Tengaran</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- RIGHT IMAGE -->
-      <div class="col-md-5 text-center mt-5 mt-md-0">
-        <img src="me.jpeg" alt="About Image" class="about-img img-fluid">
-      </div>
-
-    </div>
+  <!-- MAIN HERO CAT -->
+  <div class="hero-cat">
+    <svg width="220" height="260" viewBox="0 0 220 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- body -->
+      <ellipse cx="110" cy="180" rx="70" ry="75" fill="#D9A299"/>
+      <!-- tummy -->
+      <ellipse cx="110" cy="195" rx="42" ry="48" fill="#F0E4D3"/>
+      <!-- head -->
+      <ellipse cx="110" cy="100" rx="65" ry="60" fill="#D9A299"/>
+      <!-- ears -->
+      <polygon points="60,55 45,15 85,45" fill="#D9A299"/>
+      <polygon points="160,55 175,15 135,45" fill="#D9A299"/>
+      <!-- inner ears -->
+      <polygon points="63,50 52,25 80,44" fill="#F0C5C0"/>
+      <polygon points="157,50 168,25 140,44" fill="#F0C5C0"/>
+      <!-- face -->
+      <!-- eyes -->
+      <g class="cat-eye" style="transform-origin:92px 97px">
+        <ellipse cx="92" cy="97" rx="10" ry="12" fill="#3D2B23"/>
+        <ellipse cx="95" cy="93" rx="3" ry="3" fill="white"/>
+      </g>
+      <g class="cat-eye" style="transform-origin:128px 97px">
+        <ellipse cx="128" cy="97" rx="10" ry="12" fill="#3D2B23"/>
+        <ellipse cx="131" cy="93" rx="3" ry="3" fill="white"/>
+      </g>
+      <!-- nose -->
+      <ellipse cx="110" cy="113" rx="5" ry="4" fill="#C4716A"/>
+      <!-- mouth -->
+      <path d="M105 117 Q110 124 115 117" stroke="#C4716A" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <!-- whiskers left -->
+      <line x1="70" y1="110" x2="100" y2="114" stroke="#8C7066" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+      <line x1="65" y1="118" x2="100" y2="118" stroke="#8C7066" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+      <!-- whiskers right -->
+      <line x1="150" y1="110" x2="120" y2="114" stroke="#8C7066" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+      <line x1="155" y1="118" x2="120" y2="118" stroke="#8C7066" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+      <!-- paws -->
+      <ellipse cx="75" cy="248" rx="22" ry="14" fill="#D9A299"/>
+      <ellipse cx="145" cy="248" rx="22" ry="14" fill="#D9A299"/>
+      <!-- toe beans -->
+      <circle cx="65" cy="252" r="5" fill="#F0C5C0"/>
+      <circle cx="75" cy="256" r="5" fill="#F0C5C0"/>
+      <circle cx="85" cy="252" r="5" fill="#F0C5C0"/>
+      <circle cx="135" cy="252" r="5" fill="#F0C5C0"/>
+      <circle cx="145" cy="256" r="5" fill="#F0C5C0"/>
+      <circle cx="155" cy="252" r="5" fill="#F0C5C0"/>
+      <!-- tail -->
+      <g class="cat-tail">
+        <path d="M175 230 Q210 200 200 160 Q192 140 180 150" stroke="#D9A299" stroke-width="18" fill="none" stroke-linecap="round"/>
+      </g>
+      <!-- blush -->
+      <ellipse cx="82" cy="118" rx="10" ry="6" fill="#F0A0A0" opacity=".35"/>
+      <ellipse cx="138" cy="118" rx="10" ry="6" fill="#F0A0A0" opacity=".35"/>
+      <!-- bowtie -->
+      <polygon points="95,145 105,155 95,165" fill="#DCC5B2"/>
+      <polygon points="125,145 115,155 125,165" fill="#DCC5B2"/>
+      <ellipse cx="110" cy="155" rx="7" ry="7" fill="#F0E4D3"/>
+    </svg>
   </div>
+
+  <!-- floating stars -->
+  <div style="position:absolute; top:140px; right:340px; font-size:20px; animation: fadeSlideUp 1s .8s both; opacity:.5;">✦</div>
+  <div style="position:absolute; top:200px; right:290px; font-size:12px; animation: fadeSlideUp 1s 1s both; opacity:.4;">✦</div>
+  <div style="position:absolute; top:90px; right:420px; font-size:14px; animation: fadeSlideUp 1s .6s both; opacity:.35;">✦</div>
 </section>
 
-<!-- PROJECTS SECTION -->
-<section class="projects">
-  <div class="container">
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-image-wrap reveal">
+      <div class="img-placeholder">
+        <img src="me.jpeg" alt="Siti Mutiara" onerror="this.style.display='none'; this.parentElement.innerHTML+='<span style=\'font-size:80px\'>🐱</span>'">
+      </div>
+      <div class="about-sticker">
+        <span>🎨</span>
+        3 Tahun Pengalaman
+      </div>
+    </div>
 
-    <!-- TITLE -->
-    <div class="text-center mb-5">
-      <span class="section-label">PROJECTS</span>
-      <h2 class="projects-title">Featured Work</h2>
-      <p class="projects-desc">
-        A showcase of my recent projects demonstrating expertise in front-end
-        development, modern frameworks, and creative problem-solving.
+    <div class="reveal" style="transition-delay:.15s">
+      <span class="section-label">About Me</span>
+      <h2 class="section-title">Belajar, Berkarya, &amp;<br><em style="font-style:italic; color:var(--rose)">Bertumbuh</em></h2>
+      <p class="section-desc" style="margin-bottom:16px">
+        I'm a creative front-end developer passionate about crafting modern and
+        responsive web experiences. By focusing on clean design and usability,
+        I turn ideas into digital products that users enjoy.
       </p>
-    </div>
-
-    <!-- PROJECT LIST -->
-    <div class="row g-4">
-
-      <!-- PROJECT 1 -->
-      <div class="col-md-4">
-        <div class="project-card">
-          <img src="porto.jpg" class="project-img" alt="Portofolio">
-
-          <h5>Portofolio Website</h5>
-          <p>
-            Menggunakan Pemograman yang Simpel untuk pemula
-          </p>
-
-          <div class="tech-badge">
-            <span>HTML</span>
-            <span>CSS</span>
-          </div>
-
-          <div class="project-btn">
-            <a href="#" class="btn btn-dark btn-sm">GitHub</a>
-            <a href="#" class="btn btn-outline-dark btn-sm">Live Demo</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- PROJECT 2 -->
-      <div class="col-md-4">
-        <div class="project-card">
-          <img src="wordpres.png" class="project-img" alt="WordPress">
-
-          <h5>Website WordPress</h5>
-          <p>
-            Menggunakan web wordpress dan membuat untuk menyambungkan
-          </p>
-
-          <div class="tech-badge">
-            <span>PHP</span>
-            <span>MySQL</span>
-            <span>HTML</span>
-            <span>CSS</span>
-            <span>JavaScript</span>
-          </div>
-
-          <div class="project-btn">
-            <a href="#" class="btn btn-dark btn-sm">GitHub</a>
-            <a href="#" class="btn btn-outline-dark btn-sm">Live Demo</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- PROJECT 3 -->
-      <div class="col-md-4">
-        <div class="project-card">
-          <img src="coffe.jpg" class="project-img" alt="UMKM">
-
-          <h5>Coffe Website</h5>
-          <p>
-           Menggunakan Tontonan dari youtube dari awal membuat web
-          </p>
-
-          <div class="tech-badge">
-            <span>HTML</span>
-            <span>CSS</span>
-            <span>JavaScript</span>
-          </div>
-
-          <div class="project-btn">
-            <a href="#" class="btn btn-dark btn-sm">GitHub</a>
-            <a href="#" class="btn btn-outline-dark btn-sm">Live Demo</a>
-          </div>
-        </div>
-      </div>
-
-       <!-- PROJECT 4 -->
-      <div class="col-md-4">
-        <div class="project-card">
-          <img src="umkmfashion.jpg" class="project-img" alt="UMKM">
-
-          <h5>UMKM Website</h5>
-          <p>
-            umkm fashion yang akan diwawancarai dengan sesuai produk pelanggan
-          </p>
-
-          <div class="tech-badge">
-            <span>HTML</span>
-            <span>CSS</span>
-            <span>JavaScript</span>
-          </div>
-
-          <div class="project-btn">
-            <a href="#" class="btn btn-dark btn-sm">GitHub</a>
-            <a href="#" class="btn btn-outline-dark btn-sm">Live Demo</a>
-          </div>
-        </div>
-      </div>
-
-       <!-- PROJECT 5 -->
-      <div class="col-md-4">
-        <div class="project-card">
-          <img src="porto.jpg" class="project-img" alt="UMKM">
-
-          <h5>Portofolio Website</h5>
-          <p>
-           Mengupdate bakat dengan menggunakan php dengan menyambungkan php my admin
-          </p>
-
-          <div class="tech-badge">
-            <span>PHP</span>
-            <span>MySQL</span>
-            <span>JavaScript</span>
-          </div>
-
-          <div class="project-btn">
-            <a href="#" class="btn btn-dark btn-sm">GitHub</a>
-            <a href="#" class="btn btn-outline-dark btn-sm">Live Demo</a>
-          </div>
-        </div>
-      </div>
-
-       <!-- PROJECT 6 -->
-      <div class="col-md-4">
-        <div class="project-card">
-          <img src="umkmfashion.jpg" class="project-img" alt="UMKM">
-
-          <h5>Resto Website</h5>
-          <p>
-            membuat resto dengan cara reservasi online dari pembuatan web
-          </p>
-
-          <div class="tech-badge">
-            <span>PHP</span>
-            <span>Laravel</span>
-            <span>React</span>
-          </div>
-
-          <div class="project-btn">
-            <a href="#" class="btn btn-dark btn-sm">GitHub</a>
-            <a href="#" class="btn btn-outline-dark btn-sm">Live Demo</a>
-          </div>
-        </div>
-      </div>
-
-       <!-- PROJECT 7 -->
-      <div class="col-md-4">
-        <div class="project-card">
-          <img src="umkmfashion.jpg" class="project-img" alt="UMKM">
-
-          <h5>UMKM Website</h5>
-          <p>
-           pembuatan website dengan cara pembayaran menggunakan midtrans
-          </p>
-
-          <div class="tech-badge">
-            <span>PHP</span>
-            <span>React</span>
-            <span>Laravel</span>
-          </div>
-
-          <div class="project-btn">
-            <a href="#" class="btn btn-dark btn-sm">GitHub</a>
-            <a href="#" class="btn btn-outline-dark btn-sm">Live Demo</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS & EXPERIENCE SECTION -->
-<section class="skills-experience">
-  <div class="container">
-
-    <!-- TITLE -->
-    <div class="text-center mb-5">
-      <span class="section-label">SKILLS & EXPERIENCE</span>
-      <h2 class="skills-title">My Skills & Experience</h2>
-      <p class="skills-desc">
-        A combination of technical skills and hands-on experience gained through
-        real-world projects and continuous learning.
+      <p class="section-desc">
+        I am a creative front-end and back-end developer passionate about making modern crafts and
+        responsive web experiences — bridging design thinking with solid engineering.
       </p>
-    </div>
 
-    <div class="row g-5">
-
-      <!-- SKILLS -->
-      <div class="col-md-6">
-        <h4 class="sub-title">Skills</h4>
-
-        <div class="skill-item">
-          <div class="d-flex justify-content-between">
-            <span>HTML / CSS</span>
-            <span>90%</span>
-          </div>
-          <div class="progress">
-            <div class="progress-bar" style="width:90%"></div>
-          </div>
+      <div class="drive-cards">
+        <div class="drive-card">
+          <div class="icon">⚙️</div>
+          <h6>Languages</h6>
+          <p>HTML, CSS, JavaScript, PHP, React</p>
         </div>
-
-        <div class="skill-item">
-          <div class="d-flex justify-content-between">
-            <span>JavaScript</span>
-            <span>80%</span>
-          </div>
-          <div class="progress">
-            <div class="progress-bar" style="width:80%"></div>
-          </div>
+        <div class="drive-card">
+          <div class="icon">🎓</div>
+          <h6>Education</h6>
+          <p>SMKN Tengaran<br>RPL</p>
         </div>
-
-        <div class="skill-item">
-          <div class="d-flex justify-content-between">
-            <span>Bootstrap</span>
-            <span>85%</span>
-          </div>
-          <div class="progress">
-            <div class="progress-bar" style="width:85%"></div>
-          </div>
-        </div>
-
-        <div class="skill-item">
-          <div class="d-flex justify-content-between">
-            <span>React</span>
-            <span>75%</span>
-          </div>
-          <div class="progress">
-            <div class="progress-bar" style="width:75%"></div>
-          </div>
-        </div>
-
-        <div class="skill-item">
-          <div class="d-flex justify-content-between">
-            <span>UI / UX Design</span>
-            <span>80%</span>
-          </div>
-          <div class="progress">
-            <div class="progress-bar" style="width:80%"></div>
-          </div>
+        <div class="drive-card">
+          <div class="icon">📁</div>
+          <h6>Organisasi</h6>
+          <p>Rohis SMKN Tengaran</p>
         </div>
       </div>
-
-      <!-- EXPERIENCE -->
-      <div class="col-md-6">
-        <h4 class="sub-title">Experience</h4>
-
-        <div class="experience-item">
-          <h6>Front-End Developer</h6>
-          <span>Freelance • 2023 - Present</span>
-          <p>
-            Building responsive websites, landing pages, and dashboards using
-            HTML, CSS, Bootstrap, and JavaScript.
-          </p>
-        </div>
-
-        <div class="experience-item">
-          <h6>UI / UX Designer</h6>
-          <span>Personal Projects • 2022 - Present</span>
-          <p>
-            Designing user-friendly interfaces and wireframes with a focus on
-            usability and modern aesthetics.
-          </p>
-        </div>
-
-        <div class="experience-item">
-          <h6>Web Developer</h6>
-          <span>Self Learning • 2021 - Present</span>
-          <p>
-            Learning and practicing web development through online courses,
-            documentation, and real projects.
-          </p>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
 
-<!-- CONTACT SECTION -->
-<section class="contact">
-  <div class="container">
-
-    <!-- TITLE -->
-    <div class="text-center mb-5">
-      <span class="section-label">CONTACT</span>
-      <h2 class="contact-title">Get in Touch with Us</h2>
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="projects-header reveal">
+    <div>
+      <span class="section-label">Projects</span>
+      <h2 class="section-title">Featured Work ✦</h2>
     </div>
+    <p class="section-desc" style="max-width:380px; text-align:right">
+      A showcase of recent projects demonstrating expertise in front-end development and creative problem-solving.
+    </p>
+  </div>
 
-    <div class="row align-items-start">
+  <div class="projects-grid">
 
-      <!-- LEFT INFO -->
-      <div class="col-md-5">
-        <p class="contact-desc">
-          I'm always open to discuss exciting projects and new opportunities.
-          Let's collaborate!
-        </p>
-
-        <ul class="contact-info">
-          <li>📧 amine@example.com</li>
-          <li>📞 +213 00 11 22 34</li>
-          <li>📍 Algiers, Boumerdes</li>
-        </ul>
-
-        <div class="social-icons">
-          <a href="#">🐙</a>
-          <a href="#">💼</a>
-          <a href="#">📸</a>
+    <div class="project-card reveal">
+      <div class="project-img-wrap">
+        <img src="porto.jpg" alt="Portfolio" onerror="this.style.display='none'">
+        <span style="position:absolute; font-size:40px">🌸</span>
+      </div>
+      <div class="project-body">
+        <h5>Portofolio Website</h5>
+        <p>Menggunakan pemrograman yang simpel untuk pemula.</p>
+        <div class="tech-badges">
+          <span class="tech-badge">HTML</span>
+          <span class="tech-badge">CSS</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="btn-sm-dark">GitHub</a>
+          <a href="#" class="btn-sm-outline">Live Demo</a>
         </div>
       </div>
+    </div>
 
-      <!-- RIGHT FORM -->
-      <div class="col-md-7 mt-4 mt-md-0">
-        <form class="contact-form">
-          <input type="text" class="form-control mb-3" placeholder="Your Name">
-          <input type="email" class="form-control mb-3" placeholder="Your Email">
-          <textarea rows="4" class="form-control mb-4" placeholder="Your Message"></textarea>
-          <button type="submit" class="btn btn-primary px-4">
-            Send Message
-          </button>
-        </form>
+    <div class="project-card reveal" style="transition-delay:.1s">
+      <div class="project-img-wrap">
+        <img src="wordpres.png" alt="WordPress" onerror="this.style.display='none'">
+        <span style="position:absolute; font-size:40px">🌐</span>
       </div>
+      <div class="project-body">
+        <h5>Website WordPress</h5>
+        <p>Menggunakan web WordPress untuk konektivitas konten dinamis.</p>
+        <div class="tech-badges">
+          <span class="tech-badge">PHP</span>
+          <span class="tech-badge">MySQL</span>
+          <span class="tech-badge">HTML</span>
+          <span class="tech-badge">CSS</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="btn-sm-dark">GitHub</a>
+          <a href="#" class="btn-sm-outline">Live Demo</a>
+        </div>
+      </div>
+    </div>
 
+    <div class="project-card reveal" style="transition-delay:.2s">
+      <div class="project-img-wrap">
+        <img src="coffe.jpg" alt="Coffee" onerror="this.style.display='none'">
+        <span style="position:absolute; font-size:40px">☕</span>
+      </div>
+      <div class="project-body">
+        <h5>Coffee Website</h5>
+        <p>Dibuat dari awal menggunakan tutorial dan kreativitas sendiri.</p>
+        <div class="tech-badges">
+          <span class="tech-badge">HTML</span>
+          <span class="tech-badge">CSS</span>
+          <span class="tech-badge">JavaScript</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="btn-sm-dark">GitHub</a>
+          <a href="#" class="btn-sm-outline">Live Demo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:.1s">
+      <div class="project-img-wrap">
+        <img src="umkmfashion.jpg" alt="UMKM" onerror="this.style.display='none'">
+        <span style="position:absolute; font-size:40px">👗</span>
+      </div>
+      <div class="project-body">
+        <h5>UMKM Fashion Website</h5>
+        <p>Platform UMKM fashion dengan katalog produk dan wawancara pelanggan.</p>
+        <div class="tech-badges">
+          <span class="tech-badge">HTML</span>
+          <span class="tech-badge">CSS</span>
+          <span class="tech-badge">JavaScript</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="btn-sm-dark">GitHub</a>
+          <a href="#" class="btn-sm-outline">Live Demo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:.2s">
+      <div class="project-img-wrap">
+        <img src="porto.jpg" alt="Portfolio PHP" onerror="this.style.display='none'">
+        <span style="position:absolute; font-size:40px">💡</span>
+      </div>
+      <div class="project-body">
+        <h5>Portfolio PHP</h5>
+        <p>Portofolio dinamis terhubung ke database via PHPMyAdmin.</p>
+        <div class="tech-badges">
+          <span class="tech-badge">PHP</span>
+          <span class="tech-badge">MySQL</span>
+          <span class="tech-badge">JavaScript</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="btn-sm-dark">GitHub</a>
+          <a href="#" class="btn-sm-outline">Live Demo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:.3s">
+      <div class="project-img-wrap">
+        <img src="umkmfashion.jpg" alt="Resto" onerror="this.style.display='none'">
+        <span style="position:absolute; font-size:40px">🍽️</span>
+      </div>
+      <div class="project-body">
+        <h5>Resto Website</h5>
+        <p>Sistem reservasi online restoran dengan integrasi pembayaran Midtrans.</p>
+        <div class="tech-badges">
+          <span class="tech-badge">PHP</span>
+          <span class="tech-badge">Laravel</span>
+          <span class="tech-badge">React</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="btn-sm-dark">GitHub</a>
+          <a href="#" class="btn-sm-outline">Live Demo</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS & EXPERIENCE -->
+<section class="skills-section" id="skills">
+  <div style="max-width:1100px; margin:0 auto; text-align:center" class="reveal">
+    <span class="section-label">Expertise</span>
+    <h2 class="section-title">Skills &amp; Experience</h2>
+    <p class="section-desc" style="margin:0 auto">A combination of technical skills and hands-on experience gained through real-world projects and continuous learning.</p>
+  </div>
+
+  <div class="skills-grid">
+    <div class="reveal" style="transition-delay:.1s">
+      <h4 style="font-family:'Playfair Display',serif; margin-bottom:24px; font-size:22px">Technical Skills</h4>
+
+      <div class="skill-item">
+        <div class="skill-header"><span>HTML / CSS</span><span class="pct">90%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>JavaScript</span><span class="pct">80%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>Bootstrap</span><span class="pct">85%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>React</span><span class="pct">75%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-header"><span>UI / UX Design</span><span class="pct">80%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+      </div>
+    </div>
+
+    <div class="reveal" style="transition-delay:.2s">
+      <h4 style="font-family:'Playfair Display',serif; margin-bottom:24px; font-size:22px">Experience</h4>
+
+      <div class="exp-item">
+        <h6>Front-End Developer</h6>
+        <span class="period">Freelance • 2023 – Present</span>
+        <p>Building responsive websites, landing pages, and dashboards using HTML, CSS, Bootstrap, and JavaScript.</p>
+      </div>
+      <div class="exp-item">
+        <h6>UI / UX Designer</h6>
+        <span class="period">Personal Projects • 2022 – Present</span>
+        <p>Designing user-friendly interfaces and wireframes with a focus on usability and modern aesthetics.</p>
+      </div>
+      <div class="exp-item">
+        <h6>Web Developer</h6>
+        <span class="period">Self Learning • 2021 – Present</span>
+        <p>Learning and practicing web development through online courses, documentation, and real projects.</p>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div style="max-width:1000px; margin:0 auto; text-align:center" class="reveal">
+    <span class="section-label">Contact</span>
+    <h2 class="section-title">Get in Touch 🐾</h2>
+  </div>
+
+  <div class="contact-wrap reveal" style="transition-delay:.15s">
+    <div class="contact-info-side">
+      <h4>Mari Berkolaborasi!</h4>
+      <p>I'm always open to discuss exciting projects and new opportunities. Let's build something beautiful together.</p>
+
+      <div class="contact-detail">
+        <div class="icon-wrap">📧</div>
+        <span>amine@example.com</span>
+      </div>
+      <div class="contact-detail">
+        <div class="icon-wrap">📞</div>
+        <span>+213 00 11 22 34</span>
+      </div>
+      <div class="contact-detail">
+        <div class="icon-wrap">📍</div>
+        <span>Algiers, Boumerdes</span>
+      </div>
+
+      <div class="socials">
+        <a href="#" class="social-btn">🐙</a>
+        <a href="#" class="social-btn">💼</a>
+        <a href="#" class="social-btn">📸</a>
+      </div>
+
+      <!-- small sitting cat -->
+      <svg width="100" height="110" viewBox="0 0 100 110" style="margin-top:30px; opacity:.7" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="50" cy="78" rx="32" ry="30" fill="#DCC5B2"/>
+        <ellipse cx="50" cy="84" rx="20" ry="20" fill="#F0E4D3"/>
+        <ellipse cx="50" cy="42" rx="28" ry="26" fill="#DCC5B2"/>
+        <polygon points="27,23 20,6 37,20" fill="#DCC5B2"/>
+        <polygon points="73,23 80,6 63,20" fill="#DCC5B2"/>
+        <polygon points="29,21 24,11 35,19" fill="#F0C5C0"/>
+        <polygon points="71,21 76,11 65,19" fill="#F0C5C0"/>
+        <ellipse cx="41" cy="40" rx="5" ry="6" fill="#3D2B23"/>
+        <ellipse cx="59" cy="40" rx="5" ry="6" fill="#3D2B23"/>
+        <ellipse cx="42.5" cy="38" rx="1.5" ry="1.5" fill="white"/>
+        <ellipse cx="60.5" cy="38" rx="1.5" ry="1.5" fill="white"/>
+        <ellipse cx="50" cy="48" rx="3" ry="2.5" fill="#C4716A"/>
+        <path d="M47 51 Q50 54 53 51" stroke="#C4716A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <line x1="28" y1="46" x2="44" y2="49" stroke="#8C7066" stroke-width="1" opacity=".6"/>
+        <line x1="28" y1="50" x2="44" y2="50" stroke="#8C7066" stroke-width="1" opacity=".6"/>
+        <line x1="72" y1="46" x2="56" y2="49" stroke="#8C7066" stroke-width="1" opacity=".6"/>
+        <line x1="72" y1="50" x2="56" y2="50" stroke="#8C7066" stroke-width="1" opacity=".6"/>
+        <ellipse cx="40" cy="55" rx="8" ry="5" fill="#D9A299"/>
+        <ellipse cx="60" cy="55" rx="8" ry="5" fill="#D9A299"/>
+      </svg>
+    </div>
+
+    <div>
+      <div class="form-group">
+        <input type="text" placeholder="Your Name">
+      </div>
+      <div class="form-group">
+        <input type="email" placeholder="Your Email">
+      </div>
+      <div class="form-group">
+        <textarea rows="5" placeholder="Your Message"></textarea>
+      </div>
+      <button class="btn-primary-warm" style="width:100%; text-align:center; display:block; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:15px">
+        Send Message 🐾
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Made with <span class="heart">♥</span> &amp; lots of 🐱 by Siti Mutiara — 2024</p>
+</footer>
+
+<!-- FLOATING MINI CAT -->
+<div class="mini-cat" title="Meow!">
+  <svg width="60" height="70" viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="30" cy="48" rx="20" ry="20" fill="#D9A299"/>
+    <ellipse cx="30" cy="27" rx="18" ry="17" fill="#D9A299"/>
+    <polygon points="16,15 11,2 22,13" fill="#D9A299"/>
+    <polygon points="44,15 49,2 38,13" fill="#D9A299"/>
+    <polygon points="18,14 14,7 21,12" fill="#F0C5C0"/>
+    <polygon points="42,14 46,7 39,12" fill="#F0C5C0"/>
+    <ellipse cx="24" cy="26" rx="4" ry="5" fill="#3D2B23"/>
+    <ellipse cx="36" cy="26" rx="4" ry="5" fill="#3D2B23"/>
+    <ellipse cx="25" cy="24" rx="1.5" ry="1.5" fill="white"/>
+    <ellipse cx="37" cy="24" rx="1.5" ry="1.5" fill="white"/>
+    <ellipse cx="30" cy="32" rx="2.5" ry="2" fill="#C4716A"/>
+    <path d="M27.5 34.5 Q30 37 32.5 34.5" stroke="#C4716A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="22" cy="35" rx="5" ry="3" fill="#F0A0A0" opacity=".4"/>
+    <ellipse cx="38" cy="35" rx="5" ry="3" fill="#F0A0A0" opacity=".4"/>
+    <ellipse cx="22" cy="62" rx="10" ry="7" fill="#D9A299"/>
+    <ellipse cx="38" cy="62" rx="10" ry="7" fill="#D9A299"/>
+  </svg>
+</div>
+
+<script>
+  // ─── REVEAL ON SCROLL ───
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // ─── SKILL BAR ANIMATION ───
+  const skillObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.skill-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  const skillSection = document.querySelector('.skills-section');
+  if (skillSection) skillObs.observe(skillSection);
+
+  // ─── ACTIVE NAV LINK ───
+  const sections = document.querySelectorAll('section[id], nav');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    document.querySelectorAll('section[id]').forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) cur = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + cur || (cur==='' && a.getAttribute('href')==='#'));
+    });
+  });
+
+  // ─── MINI CAT MEOW ───
+  document.querySelector('.mini-cat').addEventListener('click', () => {
+    const msg = document.createElement('div');
+    msg.textContent = 'Meow! 🐾';
+    Object.assign(msg.style, {
+      position:'fixed', bottom:'100px', right:'30px',
+      background:'var(--white)', border:'1.5px solid var(--sand)',
+      borderRadius:'12px', padding:'8px 16px',
+      fontSize:'14px', color:'var(--deep)',
+      boxShadow:'0 6px 20px rgba(0,0,0,0.08)',
+      animation:'fadeSlideUp .3s ease both',
+      zIndex:'600', fontFamily:"'DM Sans',sans-serif"
+    });
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 1800);
+  });
+</script>
 </body>
 </html>
